@@ -26,7 +26,7 @@ library(shinydashboard)
 
 ui <- dashboardPage(
   dashboardHeader(title = "TrialMatch",titleWidth = 350),
-  dashboardSidebar(
+  dashboardSidebar(collapsed=TRUE,    
     
     tags$style(HTML("
       .main-sidebarmenu{

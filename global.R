@@ -123,7 +123,7 @@ loadDbData <- function() {
     "LastUpdate" = last_update_date,
     "HoldStatus" = trial_hold_status,
     "Documentation" = docs,
-   "Location" = locations,
+   "Location" = locations, 
    "TrialLastUpdate" = doclastupdate
   )
  

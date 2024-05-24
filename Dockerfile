@@ -132,7 +132,8 @@ EXPOSE 3838
 #COPY --chown=shiny:shiny ./TrialCurate /srv/shiny-server/TrialCurate/
 #COPY ./TrialCurate /srv/shiny-server/TrialCurate
 #COPY  --chown=shiny:shiny . /srv/shiny-server/
-COPY  --chown=shiny:shiny . /srv/shiny-server/TrialCurate/
+#COPY  --chown=shiny:shiny . /srv/shiny-server/TrialCurate/
+COPY  --chown=shiny:shiny . /srv/shiny-server/TrialBrowse/
 
 #WORKDIR /srv/shiny-server/TrialCurate
 #WORKDIR /srv/shiny-server/TrialBrowse

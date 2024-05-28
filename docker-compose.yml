@@ -19,7 +19,9 @@ services:
       #- ./data/db:/data/db:ro
      # - ./TrialCurate/data/trials:/data/trials
      # - ./TrialCurate/mongo/db_init.sh:/docker-entrypoint-initdb.d/db_init.sh:ro
-       - ./data/trials:/data/trials
+
+      # - ./data/trials:/data/trials
+       - ./data/trials:/data/trials:ro
        - ./mongo/db_init.sh:/docker-entrypoint-initdb.d/db_init.sh:ro
 
 

@@ -30,8 +30,9 @@ if (storage == "db") {
   
   if (docker == "yes") {
     #db_url <<- "host.docker.internal:27017,127.0.0.1:27017" 
-    db_url <<- "host.docker.internal:27017"
-  }
+#    db_url <<- "host.docker.internal:27017"
+     db_url <<- "mongodb://host.docker.internal:27017/aci" 
+}
   
   if (docker == "no") {
     

@@ -31,7 +31,10 @@ if (storage == "db") {
   if (docker == "yes") {
     #db_url <<- "host.docker.internal:27017,127.0.0.1:27017" 
 #    db_url <<- "host.docker.internal:27017"
-     db_url <<- "mongodb://host.docker.internal:27017/aci" 
+    # db_url <<- "mongodb://host.docker.internal:27017/aci" 
+
+	#connecting with the service name of mongo
+      db_url <<- "mongodb://mongodba:27017"
 }
   
   if (docker == "no") {

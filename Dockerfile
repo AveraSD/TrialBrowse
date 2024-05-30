@@ -14,7 +14,9 @@ RUN apt-get update && \
     git \
     wget \
     curl \ 
-    libcurl4-gnutls-dev \
+#install libcurl4-openssl-dev instead of libcurl4-gnutls-dev due to issues in download and install tidyverse
+#    libcurl4-gnutls-dev \
+     libcurl4-openssl-dev \ 
 #for units package  - libudunits2.so
     libudunits2-dev \ 
     libxml2-dev \
@@ -72,9 +74,15 @@ RUN R -e "install.packages('shinydashboard',dependencies=TRUE, repos='http://cra
 RUN R -e "install.packages('htmltools',dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('shinythemes',dependencies=TRUE, repos='http://cran.rstudio.com/')"
 
-RUN R -e "install.packages('readxl',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+#Installing readxl and tidyverse using different cran mirror due to issues in install inside docker container
+#RUN R -e "install.packages('readxl',dependencies=TRUE, repos='http://cran.rstudio.com/')"
 
-RUN R -e "install.packages('tidyverse',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+#RUN R -e "install.packages('tidyverse',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+
+RUN R -e "install.packages('readxl',dependencies=TRUE, repos='https://cloud.r-project.org/')"
+
+RUN R -e "install.packages('tidyverse',dependencies=TRUE, repos='https://cloud.r-project.org/')"
+
 
 #install R packages using the above command with the list shown below
 #RUN R -e "install.packages(pkgs=c(\

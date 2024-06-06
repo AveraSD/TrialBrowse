@@ -143,6 +143,9 @@ EXPOSE 3838
 #COPY  --chown=shiny:shiny . /srv/shiny-server/TrialCurate/
 COPY  --chown=shiny:shiny . /srv/shiny-server/TrialBrowse/
 
+#set environment variables
+ENV MONGO_URL=mongodb://mongodba:27017/aci
+
 #WORKDIR /srv/shiny-server/TrialCurate
 #WORKDIR /srv/shiny-server/TrialBrowse
 

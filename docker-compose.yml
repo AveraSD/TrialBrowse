@@ -5,8 +5,8 @@ services:
 
     ports:
       - "3838:3838" # host:container
-    networks:
-      - app-net
+#    networks:
+ #     - app-net
     container_name: shinyapps
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -14,7 +14,7 @@ services:
     environment:
       - MONGO_HOST=mongodba
       - MONGO_PORT=27017
-      - MONGO_URL: "mongodb://mongodba:27017/aci"
+      - MONGO_URL="mongodb://mongodba:27017/aci"
     depends_on:
       - mongodba
   mongodba:
@@ -33,14 +33,14 @@ services:
        - ./mongod.conf:/etc/mongo/mongod.conf
 
     #Install mongo-tools for using mongoimport
-    command: >
-      bash -c "
-        apt-get update &&
-        apt-get install -y mongo-tools"
-      ["mongod","--config","/etc/mongo/mongod.conf"]
-    networks:
-      - app-net
+   # command: >
+    #  bash -c "
+     #   apt-get update &&
+      #  apt-get install -y mongo-tools"
+     # ["mongod","--config","/etc/mongo/mongod.conf"]
+  #  networks:
+   #   - app-net
 
-networks:
-  app-net:
-    name: app-net
+#networks:
+ # app-net:
+  #  name: app-net

@@ -1,12 +1,11 @@
-version: "3.8"
 services:
   shinyapps:
     build: .
 
     ports:
       - "3838:3838" # host:container
-#    networks:
- #     - app-net
+    networks:
+      - app-net
     container_name: shinyapps
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -18,31 +17,16 @@ services:
     depends_on:
       - mongodba
   mongodba:
-   # image: mongo:latest
-    build: ./mongo
+    image: mongo:latest
+    restart: always
     ports:
-      - "27017:27017"
+      - 27017:27017
     container_name: mongodba
     volumes:
-      #- ./data/db:/data/db:ro
-     # - ./TrialCurate/data/trials:/data/trials
-     # - ./TrialCurate/mongo/db_init.sh:/docker-entrypoint-initdb.d/db_init.sh:ro
-
-      # - ./data/trials:/data/trials
        - ./data/trials:/data/trials:ro
-      # - ./mongo/db_init.sh:/docker-entrypoint-initdb.d/db_init.sh:ro
-       - ./db_init.sh:/docker-entrypoint-initdb.d/db_init.sh:ro
-      # - ./mongod.conf:/etc/mongo/mongod.conf
-
-    #Install mongo-tools for using mongoimport
-   # command: >
-    #  bash -c "
-     #   apt-get update &&
-      #  apt-get install -y mongo-tools"
-     # ["mongod","--config","/etc/mongo/mongod.conf"]
-  #  networks:
-   #   - app-net
-
-#networks:
- # app-net:
-  #  name: app-net
+       - ./docker-entrypoint-initdb.d/db_init.sh:/docker-entrypoint-initdb.d/db_init.sh:ro
+    networks:
+      - app-net
+networks:
+ app-net:
+  name: app-net

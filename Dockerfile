@@ -13,7 +13,8 @@ RUN apt-get update && \
     apt-utils \
     git \
     wget \
-    curl \ 
+    curl \
+    netcat \ 
 #    mongo-tools \	
 #install libcurl4-openssl-dev instead of libcurl4-gnutls-dev due to issues in download and install tidyverse
 #    libcurl4-gnutls-dev \

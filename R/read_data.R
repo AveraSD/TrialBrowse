@@ -29,25 +29,19 @@ if (storage == "db") {
   docker <- config::get("docker")
   
   if (docker == "yes") {
-    #db_url <<- "host.docker.internal:27017,127.0.0.1:27017" 
-#    db_url <<- "host.docker.internal:27017"
-    # db_url <<- "mongodb://host.docker.internal:27017/aci" 
-
 	#connecting with the service name of mongo
-      db_url <<- "mongodb://mongodba:27017"
+      db_url <<- "mongodb://mongodba:27017/aci"
 }
   
   if (docker == "no") {
     
-    db_url <<- "mongodb://127.0.0.1:27017"
+    db_url <<- "mongodb://127.0.0.1:27017/aci"
   }
   
   result <<- loadDbData()
   browse_tbl <<- result
-  
  
-  
-  
+
 }
 
 for (i in 1:nrow(browse_tbl)) {

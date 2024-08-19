@@ -4,7 +4,7 @@
  # docker: "yes" # yes | no
   #storage: "db" # db | json
 
-  
+
 default:
   trial_data_dir: "data/trials/"
   pt_data_file: "data/pt/ptdata.tsv"
@@ -12,7 +12,7 @@ default:
   storage: "db"
 
 
-test: 
+test:
   trial_data_dir: "data/trials"
   pt_data_file: "data/pt/ptdata.tsv"
   docker: "yes"

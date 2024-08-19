@@ -65,3 +65,5 @@ locAv = browse_tbl %>% select(Location) %>% distinct()
 
 trialTyAv = browse_tbl %>% select(JIT) %>% distinct()
 lineoftxAv = browse_tbl %>% select(arms) %>% unnest(arms) %>% separate_rows(line_of_therapy,sep = c(";")) %>% select(line_of_therapy) %>% distinct() 
+
+seldiscolumns<- browse_tbl %>% select(Protocol, JIT, Title, Summary, Phase, Title, HoldStatus, Conditions, lnOfTherapy, disp_biomarkers)

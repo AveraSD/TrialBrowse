@@ -130,6 +130,24 @@ ui <- dashboardPage(
                                       width = "100%"
 
                                     ),
+                
+                selectInput(
+                  inputId = "selcolumns",
+                  label = "Column selection",
+                  
+                  choices = c(colnames(seldiscolumns)),
+                  #            choices = c(colnames(browse_tbl),
+                  # selected = names(browse_tbl)),
+                  
+                  
+                  
+                  multiple = T,
+                  
+                  width = "100%"
+                  
+                ),
+                
+                
                                
                                  #   actionButton("loc_fil", "Filter",icon = shiny::icon("filter"),size = "sm",class = "btn-warning",width="50%"),
                 actionButton("loc_fil", "Filter",icon = shiny::icon("filter"),size = "sm",class = "btn-ltgreen",width="50%"),
@@ -149,7 +167,7 @@ ui <- dashboardPage(
        
                                       actionButton("collapse_btn_browse", "Collapse All",class = "btn-purple", width = "50%") ,
        
-       
+                                      checkboxInput("show_closed","show closed trials",value = FALSE),
        
        
                            #, #fluidrow

@@ -32,13 +32,103 @@ shinyServer(function(input, output,session) {
     
     # selection 
     SelStage = as.list.data.frame(input$stageView)
-    checkStageSel = browse_tbl %>% select(NCT, disp_disease) %>% unnest(disp_disease) %>% separate_rows(stage,sep = ";") %>% filter(stage %in% SelStage) %>% select(NCT) %>% distinct()
+  #  checkStageSel = browse_tbl %>% select(NCT, disp_disease) %>% unnest(disp_disease) %>% separate_rows(stage,sep = ";") %>% filter(stage %in% SelStage) %>% select(NCT) %>% distinct()
+    
+    checkStageSel = browse_tbl %>% select(NCT, disp_disease) %>% unnest(disp_disease) %>% separate_rows(stage,sep = ";") %>% filter(str_detect(stage, paste(SelStage,collapse = "|"))) %>% select(NCT) %>% distinct()
+    
+    
     print(isTRUE(SelStage))
     print(length(checkStageSel$NCT))
     
     
     SelDise = as.list.data.frame(input$disFil)
-    checkDiseSel = browse_tbl %>% select(NCT,disp_disease) %>% unnest(disp_disease) %>% separate_rows(stage,sep = ";") %>% filter(code %in% SelDise) %>% select(NCT) %>% distinct()
+  #  checkDiseSel = browse_tbl %>% select(NCT,disp_disease) %>% unnest(disp_disease) %>% separate_rows(stage,sep = ";") %>% filter(code %in% SelDise) %>% select(NCT) %>% distinct()
+    
+    SelDise1<- as.list.data.frame(gsub("\\([^()]*\\)","",SelDise))
+    
+    SelDise1<- trimws(SelDise1)
+    print(SelDise1)
+    
+    reactive_data <- reactive({
+      
+      if(SelDise1 == "Lung Cancer" | SelDise1 == "Lung") {
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Lung","Lung Cancer"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }else if(SelDise1 == "Breast Cancer" | SelDise1 == "Breast"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Breast","Breast Cancer"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      } else if(SelDise1 == "Small Cell Lung Cancer"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("^",c("Small Cell Lung Cancer"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      } else if(SelDise1 == "Skin" | SelDise1 == "Melanoma"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Skin","Melanoma"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }else if(SelDise1 == "Ovary/Fallopian Tube" | SelDise1 == "Ovarian Cancer"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Ovary","Ovarian Cancer"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      else if(SelDise1 == "Lymphoid Neoplasm"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Lymphoid","Lymphoma"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      else if(SelDise1 == "Myeloid Neoplasm"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Myeloid", "Myeloma"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      
+      
+      else if(SelDise1 == "Cervix"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Cervix","Cervical"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      else if(SelDise1 == "Peritoneum"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Peritoneum","Peritoneal"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      else if(SelDise1 == "Pancreas" | SelDise1 == "Pancreatic Cancer" ){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Pancreas","Pancreatic"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      else if(SelDise1 == "Bladder/Urinary Tract" | SelDise1 == "Bladder Cancer"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Bladder","Bladder Cancer"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      else if(SelDise1 == "Soft Tissue" | SelDise1 == "Sarcoma" | SelDise1 == "DSRCT"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Soft Tissue","Sarcoma"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      else if(SelDise1 == "Liver" | SelDise1 == "Liver Cancer"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Liver","Hepatocellular carcinoma"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      else if(SelDise1 == "Head and Neck" | SelDise1 == "Head and Neck Cancer"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Head and Neck","Hypopharynx", "Larynx", "Oral", "Head and Neck Squamous"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      else if(SelDise1 == "Uterus"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Uterus","Uterine", "Mullerian", "Endometrial"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      else if(SelDise1 == "CNS/Brain" | SelDise1 == "Brain Cancer"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("CNS/Brain","Glioma","Glioblastoma","Glioblastoma Multiforme"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      else if(SelDise1 == "Esophagus/Stomach" | SelDise1 == "Esophagus/Stomach Cancer" ){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Esophagus","Stomach", "Esophageal", "Esophagogastric", "Gastroesophageal"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      else if(SelDise1 == "Solid Tumors"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Uterus","Cervix", "Vulva", "Vagina","Brain", "Bowel","Lung","Breast","Bone", "Skin","Biliary Tract",
+                                                                                                                     "Ovary","Fallopian Tube","Esophagus", "Stomach","Pancreas","Kidney","Head and Neck","Soft Tissue","Rectal","Oropharynx",
+                                                                                                                     "Lymphoid", "Colorectal","Glioblastoma","Melanoma","Colorectal","Pancreatic","Gall bladder","Non-Small Cell Lung",
+                                                                                                                     "Hepatocellular Carcinoma","Glioma","Ovarian","Gliosarcoma","Gastroesophageal","Small Cell Lung","Renal","Esophageal",
+                                                                                                                     "Sarcoma", "Lymphoma","Endometrial","Mullerian","Uterine","Bile","Myelofibrosis","DSRCT","Uveal", "Thymic", 
+                                                                                                                     "Prostate","Bladder","Cervical","Liver","Peritoneum", "Colon", "Thyroid","Solid Tumors"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }
+      else if(SelDise1 == "Prostate" | SelDise1 == "Prostate Cancer"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Prostate","Prostate Cancer"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()
+      }  else if(SelDise1 == "Colorectal Cancer" | SelDise1 == "Bowel"){
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",c("Colon","Colorectal Cancer", "Colorectal", "Bowel","Rectal"),"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()                                                                                                               
+      }
+      else {
+        data <- browse_tbl %>% select(NCT,disp_disease1) %>%  filter(str_detect(trimws(disp_disease1),paste0("\\b",SelDise1,"\\b",collapse = "|"))) %>% select(NCT) %>% distinct()   #works final with b
+      }
+      
+      return(data)
+    })
+    checkDiseSel = reactive_data()
+    
+    
+    
+    
+    
+    
+    
+    
+    
    # checkDiseSel = browse_tbl %>% select(NCT,disp_disease1) %>% filter(disp_disease1 %in% SelDise) %>% select(NCT) %>% distinct()
      
     # SelDrug = as.list.data.frame(input$drugFil)
@@ -48,61 +138,99 @@ shinyServer(function(input, output,session) {
     checklineoftxSel = browse_tbl %>% select(NCT,arms) %>% unnest(arms) %>% separate_rows(line_of_therapy,sep = ";") %>% filter(line_of_therapy %in% SelLineofTx) %>% select(NCT) %>% distinct()
    
     SelLocat = as.list.data.frame(input$locaFil)
-    checklocat = browse_tbl %>% select(NCT,Location) %>% filter(Location %in%  SelLocat) %>% select(NCT) %>% distinct()
+  #  checklocat = browse_tbl %>% select(NCT,Location) %>% filter(Location %in%  SelLocat) %>% select(NCT) %>% distinct()
+    checklocat = browse_tbl %>% select(NCT,Location) %>% filter(str_detect(Location, paste(SelLocat, collapse = "|"))) %>% select(NCT) %>% distinct()
+    
     
     SelTrialty = as.list.data.frame(input$trialTyxFil) # Ui name
-    checktrlTy = browse_tbl %>% select(NCT,JIT) %>% filter(JIT %in%  SelTrialty) %>% select(NCT) %>% distinct()
+  #  checktrlTy = browse_tbl %>% select(NCT,JIT) %>% filter(JIT %in%  SelTrialty) %>% select(NCT) %>% distinct()
+    checktrlTy = browse_tbl %>% select(NCT,JIT) %>% filter(str_detect(JIT, paste(SelTrialty,collapse = "|"))) %>% select(NCT) %>% distinct()
+    
     # ----------------------------------------------------------------------------------------------------------------------- #
     # part 2 options 
     #with drug
     #if(length(checkStageSel$NCT) >= 1  && length(checkDiseSel$NCT) == 0 && length(checkDrugSel$NCT) == 0 && length(checklineoftxSel$NCT) == 0 && length(checklocat$NCT) == 0 && length(checktrlTy$NCT) == 0){
 
     #without drug  
-      if(length(checkStageSel$NCT) >= 1  && length(checkDiseSel$NCT) == 0  && length(checklineoftxSel$NCT) == 0 && length(checklocat$NCT) == 0 && length(checktrlTy$NCT) == 0){  
+     
     
-          # in all four options
-      completeList = c(unique(checkStageSel$NCT))
-      print(completeList)
+   #   if(length(checkStageSel$NCT) >= 1  && length(checkDiseSel$NCT) == 0  && length(checklineoftxSel$NCT) == 0 && length(checklocat$NCT) == 0 && length(checktrlTy$NCT) == 0){  
+   #  
+   #        # in all four options
+   #    completeList = c(unique(checkStageSel$NCT))
+   #    print(completeList)
+   # 
+   #  }else if(length(checkStageSel$NCT) ==0  && length(checkDiseSel$NCT) >=1  && length(checklineoftxSel$NCT) == 0 && length(checklocat$NCT) == 0 && length(checktrlTy$NCT) == 0){
+   # 
+   #    # in all disease options
+   #    completeList = c( unique(checkDiseSel$NCT))
+   #    print(completeList)
+   #    
+   #  }else if(length(checkStageSel$NCT) ==0  && length(checkDiseSel$NCT) == 0  && length(checklineoftxSel$NCT) >=1 && length(checklocat$NCT) == 0  && length(checktrlTy$NCT) == 0){
+   # 
+   #    # in all Drug options
+   #    completeList =  c(unique(checkDrugSel$NCT))
+   #    print(completeList)
+   # 
+   # 
+   #  }else if(length(checkStageSel$NCT) == 0  && length(checkDiseSel$NCT) == 0  && length(checklineoftxSel$NCT) == 0 && length(checklocat$NCT) >=1  && length(checktrlTy$NCT) == 0){
+   # 
+   #    # in all line of therapy option
+   #    completeList = c(unique(checklineoftxSel$NCT))
+   #    print(completeList)
+   # 
+   #  }else if(length(checkStageSel$NCT) == 0  && length(checkDiseSel$NCT) == 0  && length(checklineoftxSel$NCT) == 0 && length(checklocat$NCT) == 0  && length(checktrlTy$NCT) >=1){
+   #    
+   #    # in all Location option
+   #    completeList = c(unique(checklineoftxSel$NCT))
+   #    
+   #  }else{
+   #    
+   # #   matchList = c(unique(checkStageSel$NCT), unique(checkDiseSel$NCT), unique(checkDrugSel$NCT), unique(checklineoftxSel$NCT), unique(checklocat$NCT), unique(checktrlTy$NCT) )
+   #    #without drug
+   #    matchList = c(unique(checkStageSel$NCT), unique(checkDiseSel$NCT), unique(checklineoftxSel$NCT), unique(checklocat$NCT), unique(checktrlTy$NCT) )
+   #    
+   #    ntb = as.data.frame(table(matchList))
+   #    maxNb = max(ntb$Freq)
+   #    ntb = ntb %>% filter(Freq >= maxNb )
+   #    completeList = c(ntb$matchList)
+   #    print(completeList)
+   #    
+   #  }
 
-    }else if(length(checkStageSel$NCT) ==0  && length(checkDiseSel$NCT) >=1  && length(checklineoftxSel$NCT) == 0 && length(checklocat$NCT) == 0 && length(checktrlTy$NCT) == 0){
 
-      # in all disease options
-      completeList = c( unique(checkDiseSel$NCT))
-      print(completeList)
+    get_intersection <- function(result_objects) {
+      # Extract NCT values from result objects
       
-    }else if(length(checkStageSel$NCT) ==0  && length(checkDiseSel$NCT) == 0  && length(checklineoftxSel$NCT) >=1 && length(checklocat$NCT) == 0  && length(checktrlTy$NCT) == 0){
-
-      # in all Drug options
-      completeList =  c(unique(checkDrugSel$NCT))
-      print(completeList)
-
-
-    }else if(length(checkStageSel$NCT) == 0  && length(checkDiseSel$NCT) == 0  && length(checklineoftxSel$NCT) == 0 && length(checklocat$NCT) >=1  && length(checktrlTy$NCT) == 0){
-
-      # in all line of therapy option
-      completeList = c(unique(checklineoftxSel$NCT))
-      print(completeList)
-
-    }else if(length(checkStageSel$NCT) == 0  && length(checkDiseSel$NCT) == 0  && length(checklineoftxSel$NCT) == 0 && length(checklocat$NCT) == 0  && length(checktrlTy$NCT) >=1){
+      non_null_results<- lapply(result_objects, function(result)
+      {
+        if(nrow(result) > 0) result$NCT else NULL
+      }
+      )
       
-      # in all Location option
-      completeList = c(unique(checklineoftxSel$NCT))
+      non_null_results <- Filter(Negate(is.null),non_null_results)
       
-    }else{
-      
-   #   matchList = c(unique(checkStageSel$NCT), unique(checkDiseSel$NCT), unique(checkDrugSel$NCT), unique(checklineoftxSel$NCT), unique(checklocat$NCT), unique(checktrlTy$NCT) )
-      #without drug
-      matchList = c(unique(checkStageSel$NCT), unique(checkDiseSel$NCT), unique(checklineoftxSel$NCT), unique(checklocat$NCT), unique(checktrlTy$NCT) )
-      
-      ntb = as.data.frame(table(matchList))
-      maxNb = max(ntb$Freq)
-      ntb = ntb %>% filter(Freq >= maxNb )
-      completeList = c(ntb$matchList)
-      print(completeList)
-      
+      #original block
+      if(length(non_null_results) == 0){
+        return(character(0))
+        
+      }
+    
+      intersection_nct <- Reduce(intersect, non_null_results)
+      return(intersection_nct)
     }
-
-
+    
+    result_objects <- list(checkStageSel, checkDiseSel, checklineoftxSel, checklocat, checktrlTy)
+    
+    # Get the intersection of NCT values
+    intersection_nct <- get_intersection(result_objects)
+    
+    # Print the intersection NCT values
+    print(intersection_nct)
+    
+    completeList = intersection_nct 
+      
+    
     # ----------------------------------------------------------------------------------------------------------------------- #
    
     
@@ -297,8 +425,8 @@ shinyServer(function(input, output,session) {
        #changing display order
        #  selecTrial$comTb[selecTrial$comTb$HoldStatus=="closed",] %>% dplyr::select(Protocol, Title, Phase, stages, Conditions,  HoldStatus, Diseasecat, PrincipalInvestigator,  disp_biomarkers)
        #changing display columns
-       selecTrial$comTb[selecTrial$comTb$HoldStatus=="closed",] %>% dplyr::select(Protocol, HoldStatus, Phase, Title, Disease, lnOfTherapy, disp_biomarkers)
-       
+     #  selecTrial$comTb[selecTrial$comTb$HoldStatus=="closed",] %>% dplyr::select(Protocol, HoldStatus, Phase, Title, Disease, disp_disease1, lnOfTherapy, disp_biomarkers)
+       selecTrial$comTb[selecTrial$comTb$HoldStatus=="closed",] %>% dplyr::select(Protocol, HoldStatus, Phase, Title, disp_disease1, lnOfTherapy, disp_biomarkers)
      }
    } # if closing for show_closed
    else
@@ -316,8 +444,9 @@ shinyServer(function(input, output,session) {
        # changing display order
        # selecTrial$comTb[selecTrial$comTb$HoldStatus!="closed",] %>% dplyr::select(Protocol, Title, Phase, stages, Conditions,  HoldStatus, Diseasecat, PrincipalInvestigator,  disp_biomarkers)
        #changing display columns
-       selecTrial$comTb[selecTrial$comTb$HoldStatus!="closed",] %>% dplyr::select(Protocol, HoldStatus, Phase, Title, Disease, lnOfTherapy, disp_biomarkers)
-     }
+  #     selecTrial$comTb[selecTrial$comTb$HoldStatus!="closed",] %>% dplyr::select(Protocol, HoldStatus, Phase, Title, Disease, disp_disease1, lnOfTherapy, disp_biomarkers)
+       selecTrial$comTb[selecTrial$comTb$HoldStatus!="closed",] %>% dplyr::select(Protocol, HoldStatus, Phase, Title, disp_disease1, lnOfTherapy, disp_biomarkers)
+        }
      
      
    }# else - for this - closing 

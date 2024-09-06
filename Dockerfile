@@ -14,6 +14,7 @@ RUN apt-get update && \
     git \
     wget \
     curl \
+    sudo \
     nano \	
     netcat \ 
 #    mongo-tools \	

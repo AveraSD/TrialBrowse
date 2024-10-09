@@ -75,19 +75,22 @@ for (e in 1:nrow(browse_tbl)) {
 # Make dataframe for each of the filtration criteria - for Drug, cancer type, stage, location and line of therapy 
 
 #drugAv = browse_tbl %>% select(arms) %>% unnest(arms) %>% select(drug) %>% distinct()
-diseasAv = browse_tbl %>% select(disp_disease) %>% unnest(disp_disease) %>% select(code) %>% distinct()
+
+#add sorting
+diseasAv = browse_tbl %>% select(disp_disease) %>% unnest(disp_disease) %>% select(code) %>% mutate(code = sort(code)) %>% distinct()
 
 #stageAv = browse_tbl %>% select(disp_disease) %>% unnest(disp_disease) %>% separate_rows(stage,sep = ";") %>% select(stage) %>% distinct()
-
-stageAv = browse_tbl %>% select(disp_disease) %>% unnest(disp_disease) %>% separate_rows(stage,sep = ";") %>% mutate(stage=trimws(stage)) %>% distinct()
+# change to lower case and sort
+stageAv = browse_tbl %>% select(disp_disease) %>% unnest(disp_disease) %>% separate_rows(stage,sep = ";") %>% mutate(stage=trimws(stage), stage = tolower(stage), stage = sort(stage)) %>% distinct()
 #locAv = browse_tbl %>% select(Location) %>% distinct()
 
 #trialTyAv = browse_tbl %>% select(JIT) %>% distinct()
-
-locAv = browse_tbl %>% select(Location) %>% separate_rows(Location,sep=",") %>% mutate(Location=trimws(Location)) %>% distinct()
-trialTyAv = browse_tbl %>% select(JIT) %>%  mutate(JIT =trimws(JIT)) %>% distinct()
+#Add ; in seperating data and sort
+locAv = browse_tbl %>% select(Location) %>% separate_rows(Location,sep="[;,]") %>% mutate(Location=trimws(Location), Location = sort(Location)) %>% distinct()
+#sort
+trialTyAv = browse_tbl %>% select(JIT) %>%  mutate(JIT =trimws(JIT), JIT = sort(JIT)) %>% distinct()
 
 
 lineoftxAv = browse_tbl %>% select(arms) %>% unnest(arms) %>% separate_rows(line_of_therapy,sep = c(";")) %>% select(line_of_therapy) %>% distinct() 
-
-seldiscolumns<- browse_tbl %>% select(Protocol, JIT, Title, Summary, Phase, Title, HoldStatus, Conditions, lnOfTherapy, disp_biomarkers)
+#remove Title repetition
+seldiscolumns<- browse_tbl %>% select(Protocol, JIT, Title, Summary, Phase, HoldStatus, Conditions, lnOfTherapy, disp_biomarkers, Location)
